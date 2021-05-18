@@ -1,6 +1,9 @@
 package servicelocator;
 
 public class CachedServiceLocator implements ServiceLocator{
+
+    private String associada;
+
     @Override
     public void setService(String name, Factory factory) throws LocatorError {
 
