@@ -9,8 +9,8 @@ class FactoryA1 implements Factory {
             InterfaceB b = (InterfaceB) sl.getObject("B");
             InterfaceC c = (InterfaceC) sl.getObject("C");
             return new ImplementationA1(b, c);
-        } catch (ClassCastException ex) {
-            throw new LocatorError(ex);
+        } catch (ClassCastException except) {
+            throw new LocatorError("Hi ha hagut un problema al buscar les dependències aL ServiceLocator");
         }
     }
 }

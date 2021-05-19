@@ -1,21 +1,44 @@
 package servicelocator;
 
+import java.util.HashMap;
+
 public class CachedServiceLocator implements ServiceLocator{
 
-    private String associada;
+    private HashMap<String, Factory> factories;
+    private HashMap<String, Object> constants;
+
+    public SimpleServiceLocator(){
+
+    }
+
+
 
     @Override
     public void setService(String name, Factory factory) throws LocatorError {
-
+        if (this.factories.containsValue(name)){
+            throw new LocatorError("Ja hi ha una factoria enregistrada amb aquest nom (factory utilitzat)");
+        }else{
+            this.factories.put(name,factory);
+        }
     }
 
     @Override
     public void setConstant(String name, Object value) throws LocatorError {
-
+        if(this.constants.containsValue(name)){
+            throw new LocatorError("Ja hi ha una factoria enregistrada amb aquest nom (constant utilitzat)");
+        }else{
+            this.constants.put(name,value);
+        }
     }
 
     @Override
     public Object getObject(String name) throws LocatorError {
-        return null;
+        if(this.factories.containsKey(name)){
+            return this.factories.get(name);
+        }else if(this.constants.containsKey(name)){
+            return this.constants.get(name);
+        }else{
+            throw new LocatorError("No hi ha cap factoria ni cap consant associada en aquest nom");
+        }
     }
 }

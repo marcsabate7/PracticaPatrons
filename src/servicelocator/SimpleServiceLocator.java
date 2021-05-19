@@ -38,7 +38,7 @@ public class SimpleServiceLocator implements ServiceLocator {
         }else if(this.constants.containsKey(name)){
             return this.constants.get(name);
         }else{
-            throw new LocatorError("TU PUTA MADRE");
+            throw new LocatorError("No hi ha cap factoria ni cap consant associada en aquest nom");
         }
     }
 }
