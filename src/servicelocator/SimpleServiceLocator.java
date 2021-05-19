@@ -7,6 +7,7 @@ public class SimpleServiceLocator implements ServiceLocator {
     private HashMap<String, Factory> factories;
     private HashMap<String, Object> constants;
 
+
     public SimpleServiceLocator(){
         this.factories = new HashMap<>();
         this.constants = new HashMap<>();
