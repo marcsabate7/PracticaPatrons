@@ -1,12 +1,19 @@
 package servicelocator;
 
+import java.util.HashMap;
+
 public class SimpleServiceLocator implements ServiceLocator {
 
-    private String associada;
+    private HashMap<String, Factory> factories;
+
+    public SimpleServiceLocator(){
+
+    }
+
 
     @Override
     public void setService(String name, Factory factory) throws LocatorError {
-
+        this.factories.put(name,factory);
     }
 
     @Override
