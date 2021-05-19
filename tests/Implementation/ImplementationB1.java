@@ -1,4 +1,7 @@
-package servicelocator;
+package Implementation;
+
+import Interfaces.InterfaceB;
+import Interfaces.InterfaceD;
 
 public class ImplementationB1 implements InterfaceB {
     private InterfaceD d;

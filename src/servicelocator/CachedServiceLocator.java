@@ -8,7 +8,8 @@ public class CachedServiceLocator implements ServiceLocator{
     private HashMap<String, Object> constants;
 
     public CachedServiceLocator(){
-
+        this.factories = new HashMap<>();
+        this.constants = new HashMap<>();
     }
 
     @Override

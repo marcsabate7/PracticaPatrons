@@ -8,10 +8,9 @@ public class SimpleServiceLocator implements ServiceLocator {
     private HashMap<String, Object> constants;
 
     public SimpleServiceLocator(){
-
+        this.factories = new HashMap<>();
+        this.constants = new HashMap<>();
     }
-
-
 
     @Override
     public void setService(String name, Factory factory) throws LocatorError {
