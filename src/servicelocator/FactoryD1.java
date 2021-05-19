@@ -8,7 +8,7 @@ FactoryD1 implements Factory {
             Integer d = (Integer) sl.getObject("2");
             return new ImplementationD1(d);
         } catch (ClassCastException ex) {
-            throw new LocatorError(ex);
+            throw new LocatorError("Hi ha hagut un problema al buscar les dependències al ServiceLocator: " + ex);
         }
     }
 }
