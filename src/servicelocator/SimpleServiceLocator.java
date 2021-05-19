@@ -15,7 +15,7 @@ public class SimpleServiceLocator implements ServiceLocator {
 
     @Override
     public void setService(String name, Factory factory) throws LocatorError {
-        if (this.factories.containsValue(name)){
+        if (this.factories.containsKey(name)){
             throw new LocatorError("Ja hi ha una factoria enregistrada amb aquest nom (factory utilitzat)");
         }else{
             this.factories.put(name,factory);
@@ -24,7 +24,7 @@ public class SimpleServiceLocator implements ServiceLocator {
 
     @Override
     public void setConstant(String name, Object value) throws LocatorError {
-        if(this.constants.containsValue(name)){
+        if(this.constants.containsKey(name)){
             throw new LocatorError("Ja hi ha una factoria enregistrada amb aquest nom (constant utilitzat)");
         }else{
             this.constants.put(name,value);
