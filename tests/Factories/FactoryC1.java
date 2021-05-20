@@ -1,5 +1,6 @@
 package Factories;
 
+import Interfaces.InterfaceC;
 import servicelocator.Factory;
 import Implementation.ImplementationC1;
 import servicelocator.LocatorError;
@@ -7,7 +8,7 @@ import servicelocator.ServiceLocator;
 
 public class FactoryC1 implements Factory {
     @Override
-    public Object create(ServiceLocator sl) throws LocatorError {
+    public InterfaceC create(ServiceLocator sl) throws LocatorError {
         try {
             String c = (String) sl.getObject("S");
             return new ImplementationC1(c);

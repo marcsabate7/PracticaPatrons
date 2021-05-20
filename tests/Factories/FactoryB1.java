@@ -1,12 +1,13 @@
 package Factories;
 
 import Implementation.ImplementationB1;
+import Interfaces.InterfaceB;
 import Interfaces.InterfaceD;
 import servicelocator.*;
 
 public class FactoryB1 implements Factory {
     @Override
-    public Object create(ServiceLocator sl) throws LocatorError {
+    public InterfaceB create(ServiceLocator sl) throws LocatorError {
         try {
             InterfaceD d = (InterfaceD) sl.getObject("D");
             return new ImplementationB1(d);

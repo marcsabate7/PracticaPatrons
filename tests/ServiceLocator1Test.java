@@ -13,9 +13,6 @@ import servicelocator.LocatorError;
 import servicelocator.ServiceLocator;
 import servicelocator.SimpleServiceLocator;
 
-/**
- * @author roger
- */
 public class ServiceLocator1Test {
 
     private ServiceLocator locator;
@@ -44,7 +41,6 @@ public class ServiceLocator1Test {
         locator.setConstant("T", "potato");
         locator.setService("C", new FactoryC1());
         InterfaceC c = (InterfaceC) locator.getObject("C");
-
         assertThat(c, is(instanceOf(ImplementationC1.class)));
         System.out.println("************ End of Test1 **************");
     }
