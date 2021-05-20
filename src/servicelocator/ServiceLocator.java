@@ -1,7 +1,5 @@
 package servicelocator;
 
-import servicelocator.Factory;
-import servicelocator.LocatorError;
 
 public interface ServiceLocator {
     void setService(String name, Factory factory)

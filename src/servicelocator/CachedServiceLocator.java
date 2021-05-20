@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class CachedServiceLocator implements ServiceLocator{
 
-    private HashMap<String, Factory> factories;
-    private HashMap<String, Object> constants;
+    private final HashMap<String, Factory> factories;
+    private final HashMap<String, Object> constants;
 
     public CachedServiceLocator(){
         this.factories = new HashMap<>();

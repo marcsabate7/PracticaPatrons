@@ -1,14 +1,11 @@
 package servicelocator2;
 
-import servicelocator.Factory;
-import servicelocator.ServiceLocator;
-
 import java.util.HashMap;
 
 public class SimpleServiceLocator implements ServiceLocatorComplex {
 
-    private HashMap<Class, servicelocator2.Factory> factories;
-    private HashMap<Class, Object> constants;
+    private final HashMap<Class<?>, servicelocator2.Factory<?>> factories;
+    private final HashMap<Class<?>, Object> constants;
 
 
     public SimpleServiceLocator(){
