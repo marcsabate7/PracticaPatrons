@@ -17,31 +17,33 @@ public class CachedServiceLocator implements ServiceLocatorComplex {
 
 
     @Override
-    public <T> void setService(Class<T> klass, servicelocator2.Factory<T> factory) throws LocatorError {
+    public <T> void setService(Class<T> klass, servicelocator2.Factory<T> factory) throws LocatorErrorComplex {
         if (this.factories.containsKey(klass)){
-            throw new LocatorError("Ja hi ha una factoria enregistrada amb aquest nom (factory utilitzat)");
+            throw new LocatorErrorComplex("Ja hi ha una factoria enregistrada amb aquest nom (factory utilitzat)");
         }else{
             this.factories.put(klass,factory);
         }
     }
 
     @Override
-    public <T> void setConstant(Class<T> klass, T value) throws LocatorError {
+    public <T> void setConstant(Class<T> klass, T value) throws LocatorErrorComplex {
         if(this.constants.containsKey(klass)){
-            throw new LocatorError("Ja hi ha una factoria enregistrada amb aquest nom (constant utilitzat)");
+            throw new LocatorErrorComplex("Ja hi ha una factoria enregistrada amb aquest nom (constant utilitzat)");
         }else{
             this.constants.put(klass,value);
         }
     }
 
+    @SuppressWarnings("unchecked")
+
     @Override
-    public <T> T getObject(Class<T> klass) throws LocatorError {
+    public <T> T getObject(Class<T> klass) throws LocatorErrorComplex {
         if(this.factories.containsKey(klass)){
             return (T) this.factories.get(klass);
         }else if(this.constants.containsKey(klass)){
             return (T) this.constants.get(klass);
         }else{
-            throw new LocatorError("No hi ha cap factoria ni cap consant associada en aquest nom");
+            throw new LocatorErrorComplex("No hi ha cap factoria ni cap consant associada en aquest nom");
         }
     }
 }
