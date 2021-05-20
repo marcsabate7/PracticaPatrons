@@ -30,8 +30,8 @@ public class ServiceLocator1Test {
         System.out.println("************ Starting Test0 ************");
         System.out.println("Testing FactoryD1 is correctly registered and get a instance of it.");
         locator.setConstant("I", 42);
-        locator.setService("D", new FactoryD1());
-        InterfaceD d = (InterfaceD) locator.getObject("D");
+        locator.setService("E", new FactoryD1());
+        InterfaceD d = (InterfaceD) locator.getObject("E");
         assertThat(d, is(instanceOf(ImplementationD1.class)));
         System.out.println("************ End of Test0 **************");
     }
@@ -41,8 +41,10 @@ public class ServiceLocator1Test {
         System.out.println("************ Starting Test1 ************");
         System.out.println("Testing FactoryC1 is correctly registered and get a instance of it.");
         locator.setConstant("S", "patata");
+        locator.setConstant("T", "potato");
         locator.setService("C", new FactoryC1());
         InterfaceC c = (InterfaceC) locator.getObject("C");
+
         assertThat(c, is(instanceOf(ImplementationC1.class)));
         System.out.println("************ End of Test1 **************");
     }
@@ -103,7 +105,7 @@ public class ServiceLocator1Test {
     public void getFactoryD1WithBadArguments() throws LocatorError {
         System.out.println("************ Starting Test7 ************");
         System.out.println("Testing FactoryD1 is correctly registeret but not with correct arguments and trying to get a instance of it.");
-        locator.setConstant("I", 30);
+        locator.setConstant("Int", 42);
         locator.setService("D", new FactoryD1());
         InterfaceD d = (InterfaceD) locator.getObject("D");
         System.out.println("************ End of Test7 **************");

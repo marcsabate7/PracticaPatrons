@@ -13,7 +13,6 @@ public class CachedServiceLocator implements ServiceLocatorComplex {
         this.constants = new HashMap<>();
     }
 
-
     @Override
     public <T> void setService(Class<T> klass, servicelocator2.Factory<T> factory) throws LocatorErrorComplex {
         if (this.factories.containsKey(klass)){
