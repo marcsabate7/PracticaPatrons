@@ -1,23 +1,23 @@
 import Implementation.*;
 import servicelocator2.*;
 import Interfaces.*;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class ServiceLocator2Test{
+public class ServiceLocator2Test {
 
     private ServiceLocatorGeneric simpleLocator;
     private ServiceLocatorGeneric cachedLocator;
 
     @Before
-    public void SimpleTest(){
+    public void SimpleTest() {
         simpleLocator = new SimpleServiceLocator();
         cachedLocator = new CachedServiceLocator();
     }
@@ -64,6 +64,14 @@ public class ServiceLocator2Test{
         assertThat(b, is(instanceOf(ImplementationB1.class)));
         ImplementationB1 b1 = (ImplementationB1) b;
         assertThat(b1.d, is(instanceOf(ImplementationD1.class)));
+
+        cachedLocator.setConstant(Integer.class, 42);
+        cachedLocator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
+        cachedLocator.setService(InterfaceB.class, new FactoriesGeneric.FactoryB1());
+        InterfaceB cb = cachedLocator.getObject(InterfaceB.class);
+        assertSame(cb, cachedLocator.getObject(InterfaceB.class));
+        ImplementationB1 cb1 = (ImplementationB1) cb;
+        assertThat(cb1.d, is(instanceOf(ImplementationD1.class)));
     }
 
     @Test
@@ -79,17 +87,29 @@ public class ServiceLocator2Test{
         ImplementationA1 a1 = (ImplementationA1) a;
         assertThat(a1.b, is(instanceOf(ImplementationB1.class)));
         assertThat(a1.c, is(instanceOf(ImplementationC1.class)));
+
+        cachedLocator.setConstant(Integer.class, 42);
+        cachedLocator.setConstant(String.class, "Testing");
+        cachedLocator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
+        cachedLocator.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
+        cachedLocator.setService(InterfaceB.class, new FactoriesGeneric.FactoryB1());
+        cachedLocator.setService(InterfaceA.class, new FactoriesGeneric.FactoryA1());
+        InterfaceA ca = cachedLocator.getObject(InterfaceA.class);
+        assertSame(ca, cachedLocator.getObject(InterfaceA.class));
+        ImplementationA1 ca1 = (ImplementationA1) ca;
+        assertThat(ca1.b, is(instanceOf(ImplementationB1.class)));
+        assertThat(ca1.c, is(instanceOf(ImplementationC1.class)));
     }
 
     @Test(expected = LocatorErrorGeneric.class)
-    public void alreadyExistingConstantInMapOfConstants() throws LocatorErrorGeneric{
+    public void alreadyExistingConstantInMapOfConstants() throws LocatorErrorGeneric {
         SimpleServiceLocator c = new SimpleServiceLocator();
         c.setConstant(Integer.class, 3);
         c.setConstant(Integer.class, 5);
     }
 
     @Test(expected = LocatorErrorGeneric.class)
-    public void alreadyExistingFactoryInMapOfFactories() throws LocatorErrorGeneric{
+    public void alreadyExistingFactoryInMapOfFactories() throws LocatorErrorGeneric {
         SimpleServiceLocator c = new SimpleServiceLocator();
         c.setService(InterfaceA.class, new FactoriesGeneric.FactoryA1());
         c.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
@@ -97,8 +117,29 @@ public class ServiceLocator2Test{
     }
 
     @Test(expected = LocatorErrorGeneric.class)
-    public void getObjectthatDoesntExistis() throws LocatorErrorGeneric{
+    public void getObjectThatDoesntExist() throws LocatorErrorGeneric {
         SimpleServiceLocator c = new SimpleServiceLocator();
+        c.getObject(ImplementationC1.class);
+    }
+
+    @Test(expected = LocatorErrorGeneric.class)
+    public void alreadyExistingConstantInMapOfConstantsCached() throws LocatorErrorGeneric {
+        CachedServiceLocator c = new CachedServiceLocator();
+        c.setConstant(Integer.class, 3);
+        c.setConstant(Integer.class, 5);
+    }
+
+    @Test(expected = LocatorErrorGeneric.class)
+    public void alreadyExistingFactoryInMapOfFactoriesCached() throws LocatorErrorGeneric {
+        CachedServiceLocator c = new CachedServiceLocator();
+        c.setService(InterfaceA.class, new FactoriesGeneric.FactoryA1());
+        c.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
+        c.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
+    }
+
+    @Test(expected = LocatorErrorGeneric.class)
+    public void getObjectThatDoesntExistCached() throws LocatorErrorGeneric {
+        CachedServiceLocator c = new CachedServiceLocator();
         c.getObject(ImplementationC1.class);
     }
 }
