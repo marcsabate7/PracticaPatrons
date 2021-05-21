@@ -1,28 +1,37 @@
 import Implementation.*;
-import Factories.*;
 import servicelocator2.*;
 import Interfaces.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
 
 public class ServiceLocator2Test{
 
-    private ServiceLocatorGeneric locator;
+    private ServiceLocatorGeneric simpleLocator;
+    private ServiceLocatorGeneric cachedLocator;
 
     @Before
     public void SimpleTest(){
-        locator = new SimpleServiceLocator();
+        simpleLocator = new SimpleServiceLocator();
+        cachedLocator = new CachedServiceLocator();
     }
 
     @Test
     public void testD() throws LocatorErrorGeneric {
-        locator.setConstant(Integer.class, 42);
-        locator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
-        InterfaceD d = locator.getObject(InterfaceD.class);
+        simpleLocator.setConstant(Integer.class, 42);
+        cachedLocator.setConstant(Integer.class, 42);
+        simpleLocator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
+        cachedLocator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
+        InterfaceD d = simpleLocator.getObject(InterfaceD.class);
+        InterfaceD cd = cachedLocator.getObject(InterfaceD.class);
+        //assertEquals(cd, );
+        ImplementationD1 cd1 = (ImplementationD1) cd;
+        assertThat(cd1.i, is(42));
         assertThat(d, is(instanceOf(ImplementationD1.class)));
         ImplementationD1 d1 = (ImplementationD1) d;
         assertThat(d1.i, is(42));
@@ -30,9 +39,9 @@ public class ServiceLocator2Test{
 
     @Test
     public void testC() throws LocatorErrorGeneric {
-        locator.setConstant(String.class, "Testing");
-        locator.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
-        InterfaceC c = locator.getObject(InterfaceC.class);
+        simpleLocator.setConstant(String.class, "Testing");
+        simpleLocator.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
+        InterfaceC c = simpleLocator.getObject(InterfaceC.class);
         assertThat(c, is(instanceOf(ImplementationC1.class)));
         ImplementationC1 c1 = (ImplementationC1) c;
         assertThat(c1.s, is("Testing"));
@@ -40,10 +49,10 @@ public class ServiceLocator2Test{
 
     @Test
     public void testB() throws LocatorErrorGeneric {
-        locator.setConstant(Integer.class, 42);
-        locator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
-        locator.setService(InterfaceB.class, new FactoriesGeneric.FactoryB1());
-        InterfaceB b = locator.getObject(InterfaceB.class);
+        simpleLocator.setConstant(Integer.class, 42);
+        simpleLocator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
+        simpleLocator.setService(InterfaceB.class, new FactoriesGeneric.FactoryB1());
+        InterfaceB b = simpleLocator.getObject(InterfaceB.class);
         assertThat(b, is(instanceOf(ImplementationB1.class)));
         ImplementationB1 b1 = (ImplementationB1) b;
         assertThat(b1.d, is(instanceOf(ImplementationD1.class)));
@@ -51,13 +60,13 @@ public class ServiceLocator2Test{
 
     @Test
     public void testA() throws LocatorErrorGeneric {
-        locator.setConstant(Integer.class, 42);
-        locator.setConstant(String.class, "Testing");
-        locator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
-        locator.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
-        locator.setService(InterfaceB.class, new FactoriesGeneric.FactoryB1());
-        locator.setService(InterfaceA.class, new FactoriesGeneric.FactoryA1());
-        InterfaceA a = locator.getObject(InterfaceA.class);
+        simpleLocator.setConstant(Integer.class, 42);
+        simpleLocator.setConstant(String.class, "Testing");
+        simpleLocator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
+        simpleLocator.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
+        simpleLocator.setService(InterfaceB.class, new FactoriesGeneric.FactoryB1());
+        simpleLocator.setService(InterfaceA.class, new FactoriesGeneric.FactoryA1());
+        InterfaceA a = simpleLocator.getObject(InterfaceA.class);
         assertThat(a, is(instanceOf(ImplementationA1.class)));
         ImplementationA1 a1 = (ImplementationA1) a;
         assertThat(a1.b, is(instanceOf(ImplementationB1.class)));

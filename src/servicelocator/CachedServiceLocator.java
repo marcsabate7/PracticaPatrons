@@ -33,7 +33,7 @@ public class CachedServiceLocator implements ServiceLocator{
     @Override
     public Object getObject(String name) throws LocatorError {
         if(this.factories.containsKey(name)){
-            return this.factories.get(name);
+            return this.factories.get(name).create(this);
         }else if(this.constants.containsKey(name)){
             return this.constants.get(name);
         }else{

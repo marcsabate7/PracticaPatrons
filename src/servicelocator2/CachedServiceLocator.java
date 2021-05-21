@@ -35,7 +35,7 @@ public class CachedServiceLocator implements ServiceLocatorGeneric {
     @Override
     public <T> T getObject(Class<T> klass) throws LocatorErrorGeneric {
         if(this.factories.containsKey(klass)){
-            return (T) this.factories.get(klass);
+            return (T) this.factories.get(klass).create(this);
         }else if(this.constants.containsKey(klass)){
             return (T) this.constants.get(klass);
         }else{

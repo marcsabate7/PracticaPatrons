@@ -6,29 +6,33 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import servicelocator.CachedServiceLocator;
 import servicelocator.LocatorError;
 import servicelocator.ServiceLocator;
 import servicelocator.SimpleServiceLocator;
 
 public class ServiceLocator1Test {
 
-    private ServiceLocator locator;
+    private ServiceLocator simpleLocator;
+    private ServiceLocator cachedLocator;
 
     @Before
     public void FirstTest() {
-        locator = new SimpleServiceLocator();
+        simpleLocator = new SimpleServiceLocator();
+        cachedLocator = new CachedServiceLocator();
     }
 
     @Test
     public void getInstanceOfFactoryD1() throws LocatorError {
         System.out.println("************ Starting Test0 ************");
         System.out.println("Testing FactoryD1 is correctly registered and get a instance of it.");
-        locator.setConstant("I", 42);
-        locator.setService("E", new FactoryD1());
-        InterfaceD d = (InterfaceD) locator.getObject("E");
+        simpleLocator.setConstant("I", 42);
+        simpleLocator.setService("E", new FactoryD1());
+        InterfaceD d = (InterfaceD) simpleLocator.getObject("E");
         assertThat(d, is(instanceOf(ImplementationD1.class)));
         System.out.println("************ End of Test0 **************");
     }
@@ -37,11 +41,14 @@ public class ServiceLocator1Test {
     public void getInstanceOfFactoryC1() throws LocatorError {
         System.out.println("************ Starting Test1 ************");
         System.out.println("Testing FactoryC1 is correctly registered and get a instance of it.");
-        locator.setConstant("S", "patata");
-        locator.setConstant("T", "potato");
-        locator.setService("C", new FactoryC1());
-        InterfaceC c = (InterfaceC) locator.getObject("C");
+        simpleLocator.setConstant("S", "patata");
+        simpleLocator.setService("C", new FactoryC1());
+        InterfaceC c = (InterfaceC) simpleLocator.getObject("C");
         assertThat(c, is(instanceOf(ImplementationC1.class)));
+        cachedLocator.setConstant("S", "patata");
+        cachedLocator.setService("C", new FactoryC1());
+        InterfaceC cc = (InterfaceC) cachedLocator.getObject("C");
+        assertSame(cc, cachedLocator.getObject("C"));
         System.out.println("************ End of Test1 **************");
     }
 
@@ -49,10 +56,10 @@ public class ServiceLocator1Test {
     public void getInstaceOfFactoryB1() throws LocatorError {
         System.out.println("************ Starting Test2 ************");
         System.out.println("Testing FactoryB1 is correctly registered and get a instance of it.");
-        locator.setConstant("I", 42);
-        locator.setService("D", new FactoryD1());
-        locator.setService("B", new FactoryB1());
-        InterfaceB b = (InterfaceB) locator.getObject("B");
+        simpleLocator.setConstant("I", 42);
+        simpleLocator.setService("D", new FactoryD1());
+        simpleLocator.setService("B", new FactoryB1());
+        InterfaceB b = (InterfaceB) simpleLocator.getObject("B");
         assertThat(b, is(instanceOf(ImplementationB1.class)));
         System.out.println("************ End of Test2 **************");
     }
@@ -63,7 +70,7 @@ public class ServiceLocator1Test {
         System.out.println("Testing FactoryA1 is correctly registered and get a instance of it.");
         setConstants();
         setAllFactories();
-        InterfaceA a = (InterfaceA) locator.getObject("A");
+        InterfaceA a = (InterfaceA) simpleLocator.getObject("A");
         assertThat(a, is(instanceOf(ImplementationA1.class)));
         System.out.println("************ End of Test3 **************");
     }
@@ -72,8 +79,8 @@ public class ServiceLocator1Test {
     public void creationFactoryA1WithoutConstant() throws LocatorError {
         System.out.println("************ Starting Test4 ************");
         System.out.println("Testing cration a FactoryA1 instance without a constant needed.");
-        locator.setService("A", new FactoryA1());
-        InterfaceA a = (InterfaceA) locator.getObject("A");
+        simpleLocator.setService("A", new FactoryA1());
+        InterfaceA a = (InterfaceA) simpleLocator.getObject("A");
         System.out.println("************ End of Test4 **************");
     }
 
@@ -82,8 +89,8 @@ public class ServiceLocator1Test {
         System.out.println("************ Starting Test5 ************");
         System.out.println("Testing cration a FactoryA1 instance with bad arguments.");
         setConstants();
-        locator.setService("A", new FactoryA1());
-        InterfaceA a = (InterfaceA) locator.getObject("A");
+        simpleLocator.setService("A", new FactoryA1());
+        InterfaceA a = (InterfaceA) simpleLocator.getObject("A");
         System.out.println("************ End of Test5 **************");
     }
 
@@ -92,8 +99,8 @@ public class ServiceLocator1Test {
         System.out.println("************ Starting Test6 ************");
         System.out.println("Testing cration a FactoryB1 instance with bad arguments.");
         setConstants();
-        locator.setService("B", new FactoryB1());
-        InterfaceB b = (InterfaceB) locator.getObject("B");
+        simpleLocator.setService("B", new FactoryB1());
+        InterfaceB b = (InterfaceB) simpleLocator.getObject("B");
         System.out.println("************ End of Test6 **************");
     }
 
@@ -101,9 +108,9 @@ public class ServiceLocator1Test {
     public void getFactoryD1WithBadArguments() throws LocatorError {
         System.out.println("************ Starting Test7 ************");
         System.out.println("Testing FactoryD1 is correctly registeret but not with correct arguments and trying to get a instance of it.");
-        locator.setConstant("Int", 42);
-        locator.setService("D", new FactoryD1());
-        InterfaceD d = (InterfaceD) locator.getObject("D");
+        simpleLocator.setConstant("Int", 42);
+        simpleLocator.setService("D", new FactoryD1());
+        InterfaceD d = (InterfaceD) simpleLocator.getObject("D");
         System.out.println("************ End of Test7 **************");
     }
 
@@ -111,8 +118,8 @@ public class ServiceLocator1Test {
     public void registerTwoTimesSameConstant() throws LocatorError {
         System.out.println("************ Starting Test8 ************");
         System.out.println("Testing to register two times the same constant.");
-        locator.setConstant("S", 42);
-        locator.setConstant("S", 42);
+        simpleLocator.setConstant("S", 42);
+        simpleLocator.setConstant("S", 42);
         System.out.println("************ End of Test8 **************");
     }
 
@@ -120,8 +127,8 @@ public class ServiceLocator1Test {
     public void registerTwoTimesSameFactory() throws LocatorError {
         System.out.println("************ Starting Test9 ************");
         System.out.println("Testing to register two times the same factory.");
-        locator.setService("B", new FactoryB1());
-        locator.setService("B", new FactoryB1());
+        simpleLocator.setService("B", new FactoryB1());
+        simpleLocator.setService("B", new FactoryB1());
         System.out.println("************ End of Test9 **************");
     }
 
@@ -131,14 +138,14 @@ public class ServiceLocator1Test {
         System.out.println("Testing to get different objects");
         setConstants();
         setAllFactories();
-        ImplementationA1 A1 = (ImplementationA1) locator.getObject("A");
-        ImplementationA1 A2 = (ImplementationA1) locator.getObject("A");
-        ImplementationB1 B1 = (ImplementationB1) locator.getObject("B");
-        ImplementationB1 B2 = (ImplementationB1) locator.getObject("B");
-        ImplementationC1 C1 = (ImplementationC1) locator.getObject("C");
-        ImplementationC1 C2 = (ImplementationC1) locator.getObject("C");
-        ImplementationD1 D1 = (ImplementationD1) locator.getObject("D");
-        ImplementationD1 D2 = (ImplementationD1) locator.getObject("D");
+        ImplementationA1 A1 = (ImplementationA1) simpleLocator.getObject("A");
+        ImplementationA1 A2 = (ImplementationA1) simpleLocator.getObject("A");
+        ImplementationB1 B1 = (ImplementationB1) simpleLocator.getObject("B");
+        ImplementationB1 B2 = (ImplementationB1) simpleLocator.getObject("B");
+        ImplementationC1 C1 = (ImplementationC1) simpleLocator.getObject("C");
+        ImplementationC1 C2 = (ImplementationC1) simpleLocator.getObject("C");
+        ImplementationD1 D1 = (ImplementationD1) simpleLocator.getObject("D");
+        ImplementationD1 D2 = (ImplementationD1) simpleLocator.getObject("D");
         assertNotSame(A1, A2);
         assertNotSame(B1, B2);
         assertNotSame(C1, C2);
@@ -147,14 +154,14 @@ public class ServiceLocator1Test {
     }
 
     private void setAllFactories() throws LocatorError {
-        locator.setService("A", new FactoryA1());
-        locator.setService("B", new FactoryB1());
-        locator.setService("C", new FactoryC1());
-        locator.setService("D", new FactoryD1());
+        simpleLocator.setService("A", new FactoryA1());
+        simpleLocator.setService("B", new FactoryB1());
+        simpleLocator.setService("C", new FactoryC1());
+        simpleLocator.setService("D", new FactoryD1());
     }
 
     private void setConstants() throws LocatorError {
-        locator.setConstant("I", 42);
-        locator.setConstant("S", "patata");
+        simpleLocator.setConstant("I", 42);
+        simpleLocator.setConstant("S", "patata");
     }
 }

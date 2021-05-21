@@ -7,7 +7,6 @@ import Interfaces.InterfaceC;
 import servicelocator.*;
 
 public class FactoryA1 implements Factory {
-
     @Override
     public InterfaceA create(ServiceLocator sl) throws LocatorError {
         try {
