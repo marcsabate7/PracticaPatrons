@@ -2,6 +2,7 @@ import Factories.FactoryA1;
 import Factories.FactoryB1;
 import Factories.FactoryC1;
 import Factories.FactoryD1;
+import Implementation.ImplementationA1;
 import Implementation.ImplementationB1;
 import Implementation.ImplementationC1;
 import Implementation.ImplementationD1;
@@ -52,7 +53,7 @@ public class ServiceLocator1Test {
     }
 
     @Test
-    public void getInstanceOfFactoryD1() throws LocatorError {
+    public void testFactoryD1() throws LocatorError {
         simpleLocator.setConstant("I", 42);
         simpleLocator.setService("E", new FactoryD1());
         InterfaceD d = (InterfaceD) simpleLocator.getObject("E");
@@ -65,7 +66,7 @@ public class ServiceLocator1Test {
     }
 
     @Test
-    public void getInstanceOfFactoryC1() throws LocatorError {
+    public void testFactoryC1() throws LocatorError {
         simpleLocator.setConstant("S", "patata");
         simpleLocator.setService("C", new FactoryC1());
         InterfaceC c = (InterfaceC) simpleLocator.getObject("C");
@@ -78,7 +79,7 @@ public class ServiceLocator1Test {
     }
 
     @Test
-    public void getInstaceOfFactoryB1() throws LocatorError {
+    public void testFactoryB1() throws LocatorError {
         simpleLocator.setConstant("I", 42);
         simpleLocator.setService("D", new FactoryD1());
         simpleLocator.setService("B", new FactoryB1());
@@ -92,6 +93,27 @@ public class ServiceLocator1Test {
         assertSame(cb, cachedLocator.getObject("B"));
     }
 
+    @Test
+    public void testFactoryA1() throws LocatorError {
+        simpleLocator.setConstant("S", "patata");
+        simpleLocator.setService("C", new FactoryC1());
+        simpleLocator.setConstant("I", 42);
+        simpleLocator.setService("D", new FactoryD1());
+        simpleLocator.setService("B", new FactoryB1());
+        simpleLocator.setService("A", new FactoryA1());
+        InterfaceA a = (InterfaceA) simpleLocator.getObject("A");
+        assertThat(a, is(instanceOf(ImplementationA1.class)));
+
+        cachedLocator.setConstant("S", "patata");
+        cachedLocator.setService("C", new FactoryC1());
+        cachedLocator.setConstant("I", 42);
+        cachedLocator.setService("D", new FactoryD1());
+        cachedLocator.setService("B", new FactoryB1());
+        cachedLocator.setService("A", new FactoryA1());
+        InterfaceA ca = (InterfaceA) cachedLocator.getObject("A");
+        assertSame(ca, cachedLocator.getObject("A"));
+    }
+
     @Test(expected = LocatorError.class)
     public void creationFactoryC1WithoutConstant() throws LocatorError {
         simpleLocator.setService("A", new FactoryA1());
@@ -101,7 +123,6 @@ public class ServiceLocator1Test {
 
     @Test(expected = LocatorError.class)
     public void creationFactoryA1withBadArgumentsSimple() throws LocatorError {
-        setConstantsSimple();
         simpleLocator.setService("A", new FactoryA1());
         InterfaceA a = (InterfaceA) simpleLocator.getObject("A");
         System.out.println("TEST FAILED");
@@ -109,7 +130,6 @@ public class ServiceLocator1Test {
 
     @Test(expected = LocatorError.class)
     public void creationFactoryB1WithBadArgumentsSimple() throws LocatorError {
-        setConstantsSimple();
         simpleLocator.setService("B", new FactoryB1());
         InterfaceB b = (InterfaceB) simpleLocator.getObject("B");
         System.out.println("TEST FAILED");
@@ -117,7 +137,6 @@ public class ServiceLocator1Test {
 
     @Test(expected = LocatorError.class)
     public void creationFactoryB1WithBadArgumentsCached() throws LocatorError {
-        setConstantsCached();
         cachedLocator.setService("B", new FactoryB1());
         InterfaceB cb = (InterfaceB) cachedLocator.getObject("B");
         System.out.println("TEST FAILED");
@@ -160,13 +179,4 @@ public class ServiceLocator1Test {
         System.out.println("TEST FAILED");
     }
 
-    private void setConstantsSimple() throws LocatorError {
-        simpleLocator.setConstant("I", 42);
-        simpleLocator.setConstant("S", "patata");
-    }
-
-    private void setConstantsCached() throws LocatorError {
-        cachedLocator.setConstant("I", 42);
-        cachedLocator.setConstant("S", "patata");
-    }
 }

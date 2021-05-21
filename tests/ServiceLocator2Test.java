@@ -30,7 +30,6 @@ public class ServiceLocator2Test {
         cachedLocator.setService(InterfaceD.class, new FactoriesGeneric.FactoryD1());
         InterfaceD d = simpleLocator.getObject(InterfaceD.class);
         InterfaceD cd = cachedLocator.getObject(InterfaceD.class);
-        //assertEquals(cd, );
         ImplementationD1 cd1 = (ImplementationD1) cd;
         assertThat(cd1.i, is(42));
         assertThat(d, is(instanceOf(ImplementationD1.class)));
