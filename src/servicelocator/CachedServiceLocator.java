@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class CachedServiceLocator implements ServiceLocator{
 
-    private final HashMap<String, Factory> factories;
+    private final HashMap<String, Object> factories;
     private final HashMap<String, Object> constants;
 
     public CachedServiceLocator(){
@@ -17,7 +17,7 @@ public class CachedServiceLocator implements ServiceLocator{
         if (this.factories.containsKey(name)){
             throw new LocatorError("Ja hi ha una factoria enregistrada amb aquest nom (factory utilitzat)");
         }else{
-            this.factories.put(name,factory);
+            this.factories.put(name, factory.create(this));
         }
     }
 
@@ -33,7 +33,7 @@ public class CachedServiceLocator implements ServiceLocator{
     @Override
     public Object getObject(String name) throws LocatorError {
         if(this.factories.containsKey(name)){
-            return this.factories.get(name).create(this);
+            return this.factories.get(name);
         }else if(this.constants.containsKey(name)){
             return this.constants.get(name);
         }else{

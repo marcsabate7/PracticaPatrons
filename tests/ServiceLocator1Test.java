@@ -10,10 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import servicelocator.CachedServiceLocator;
-import servicelocator.LocatorError;
-import servicelocator.ServiceLocator;
-import servicelocator.SimpleServiceLocator;
+import servicelocator.*;
 
 public class ServiceLocator1Test {
 
@@ -24,6 +21,24 @@ public class ServiceLocator1Test {
     public void FirstTest() {
         simpleLocator = new SimpleServiceLocator();
         cachedLocator = new CachedServiceLocator();
+    }
+
+    /**
+     *
+     *
+     * @throws LocatorError
+     */
+    @Test
+    public void assertSameConstants() throws LocatorError{
+        System.out.println("************ Starting Test0 ************");
+        System.out.println("Testing FactoryD1 is correctly registered and get a instance of it.");
+        simpleLocator.setConstant("I", 42);
+        Integer i = (Integer) simpleLocator.getObject("I");
+        assertSame(i, simpleLocator.getObject("I"));
+        simpleLocator.setConstant("F", 30);
+        Integer f = (Integer) simpleLocator.getObject("F");
+        assertNotSame(f, i);
+        System.out.println("************ End of Test0 **************");
     }
 
     @Test
@@ -75,8 +90,8 @@ public class ServiceLocator1Test {
         System.out.println("************ End of Test3 **************");
     }
 
-    @Test(expected = LocatorError.class)
-    public void creationFactoryA1WithoutConstant() throws LocatorError {
+    @Test//(expected = LocatorError.class)
+    public void creationFactoryC1WithoutConstant() throws LocatorError {
         System.out.println("************ Starting Test4 ************");
         System.out.println("Testing cration a FactoryA1 instance without a constant needed.");
         simpleLocator.setService("A", new FactoryA1());

@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +46,13 @@ public class ServiceLocator2Test{
         assertThat(c, is(instanceOf(ImplementationC1.class)));
         ImplementationC1 c1 = (ImplementationC1) c;
         assertThat(c1.s, is("Testing"));
+
+        cachedLocator.setConstant(String.class, "Testing");
+        cachedLocator.setService(InterfaceC.class, new FactoriesGeneric.FactoryC1());
+        InterfaceC cc = cachedLocator.getObject(InterfaceC.class);
+        assertSame(cc, cachedLocator.getObject(InterfaceC.class));
+        ImplementationC1 cc1 = (ImplementationC1) cc;
+        assertThat(cc1.s, is("Testing"));
     }
 
     @Test
