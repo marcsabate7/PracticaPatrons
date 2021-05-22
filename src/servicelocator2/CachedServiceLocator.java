@@ -22,6 +22,7 @@ public class CachedServiceLocator implements ServiceLocatorGeneric {
         }
     }
 
+
     @Override
     public <T> void setConstant(Class<T> klass, T value) throws LocatorErrorGeneric {
         if(this.constants.containsKey(klass)){
@@ -30,7 +31,10 @@ public class CachedServiceLocator implements ServiceLocatorGeneric {
             this.constants.put(klass,value);
         }
     }
-
+    /**
+    *
+    *
+    */
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getObject(Class<T> klass) throws LocatorErrorGeneric {

@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class SimpleServiceLocator implements ServiceLocatorGeneric {
 
-    private final HashMap<Class<?>, servicelocator2.Factory<?>> factories;
-    private final HashMap<Class<?>, Object> constants;
+    private final HashMap<Class, servicelocator2.Factory> factories;
+    private final HashMap<Class, Object> constants;
 
 
     public SimpleServiceLocator(){
