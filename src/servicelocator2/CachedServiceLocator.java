@@ -12,6 +12,10 @@ public class CachedServiceLocator implements ServiceLocatorGeneric {
         this.factories = new HashMap<>();
         this.constants = new HashMap<>();
     }
+    /**
+     *
+     *  Següent mètode instal·la una NOVA factoria en el HashMap de factories creant-lo com a Object.
+     */
 
     @Override
     public <T> void setService(Class<T> klass, servicelocator2.Factory<T> factory) throws LocatorErrorGeneric {
@@ -21,7 +25,10 @@ public class CachedServiceLocator implements ServiceLocatorGeneric {
             this.factories.put(klass, factory.create(this));
         }
     }
-
+    /**
+     * Afegeix la constant al Hashmap i llança excepció LocatorError en cas que ja hi sigui
+     *
+     */
 
     @Override
     public <T> void setConstant(Class<T> klass, T value) throws LocatorErrorGeneric {
@@ -32,7 +39,7 @@ public class CachedServiceLocator implements ServiceLocatorGeneric {
         }
     }
     /**
-    *
+    * Retorna sigui constant o factoria la mateixa instància d'Object emmagatzemada anteriorment
     *
     */
     @SuppressWarnings("unchecked")

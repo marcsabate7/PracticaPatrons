@@ -13,6 +13,12 @@ public class SimpleServiceLocator implements ServiceLocatorGeneric {
         this.constants = new HashMap<>();
     }
 
+    /**
+     * Emmagatzema en cas que no hi sigui al Hashmap la referència de Factory que li arriba per
+     * paràmetre, sense crear una nova.
+     */
+
+
     @Override
     public <T> void setService(Class<T> klass, servicelocator2.Factory<T> factory) throws LocatorErrorGeneric {
         if (this.factories.containsKey(klass)){
@@ -32,6 +38,11 @@ public class SimpleServiceLocator implements ServiceLocatorGeneric {
     }
 
     @SuppressWarnings("unchecked")
+
+    /**
+     * Retorna l'objecte de Factory creant-lo al moment de retornar, d'aquesta manera sempre és una nova instància.
+     * En cas de constant, és igual que a CachedServiceLocator
+     */
     @Override
     public <T> T getObject(Class<T> klass) throws LocatorErrorGeneric {
         if(this.factories.containsKey(klass)){
